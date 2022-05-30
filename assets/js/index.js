@@ -20,8 +20,8 @@ const getWeather = (data) => {
     .then((data) => {
 
       // current weather
-      const currentConditionsEl = $('#currentConditions');
-      currentConditionsEl.addClass('border border-primary');
+      const currentConditionsEl = $("#currentConditions");
+      currentConditionsEl.addClass("border border-primary");
       
       // create city name h2 and append to currentConditionsEl
       const cityName = data.timezone.split("/")[1];
@@ -168,6 +168,7 @@ const handleFormSubmit = (event) => {
   const cityName = cityInput.val().trim();
 
   if (cityName) {
+    clearCurrentWeather();
     getCoords(cityName);
     cityInput.val("");
 
@@ -182,6 +183,14 @@ const handleClearHistory = () => {
   displaySearchHistory();
 };
  
+// clear current weather and five day forecast when called
+const clearCurrentWeather = () => {
+  $("#currentConditions").empty();
+  $("#fiveDayForecast").empty();
+};
+
+
+
 // get search history from local storage
 // display search history on page as buttons
 // when button is clicked get the city name attached to the button and pass it to getCoords
@@ -207,6 +216,7 @@ const displaySearchHistory = () => {
 const handleCityBtnClick = () => {
   $(".city-btn").on("click", (event) => {
     const cityName = $(event.currentTarget).attr("data-name");
+    clearCurrentWeather();
     getCoords(cityName);
   });
 };
