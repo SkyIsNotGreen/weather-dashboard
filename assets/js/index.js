@@ -3,14 +3,9 @@ const API_KEY = "fb0d69912058c05c41b41d1bf7bd6b31";
 const cityInput = $("#city-input");
 const searchBtn = $("#search-btn");
 const clearBtn = $("#clear-btn");
+const cityBtn = $(".city-btn");
 const searchHistory = $("#search-history");
 
-const renderCities = () => {
-  // get recent cities from LS []
-  // if [] is empty then render alert
-  // else render all recent cities
-  // add an event listener on div containing all cities
-};
 
 // use API to fetch weather data via lat-long and render selected data on the page
 const getWeather = (data) => {
@@ -23,7 +18,6 @@ const getWeather = (data) => {
     })
 
     .then((data) => {
-      console.log(data);
 
       // current weather
       const currentConditionsEl = $('#currentConditions');
@@ -206,15 +200,21 @@ const displaySearchHistory = () => {
       cityBtn.text(storedCities[i].city);
       searchHistory.append(cityBtn);
     }
-  
-
   }
-
 };
+
+// when button is clicked get the city name attached to the button and pass it to getCoords
+const handleCityBtnClick = () => {
+  $(".city-btn").on("click", (event) => {
+    const cityName = $(event.currentTarget).attr("data-name");
+    getCoords(cityName);
+  });
+};
+
+
 
 //event listeners
 searchBtn.on("click", handleFormSubmit);
-searchHistory.on("click", ".city-btn", getCoords);
 clearBtn.on("click", handleClearHistory);
-
+cityBtn.on("click", handleCityBtnClick);
 $(document).ready(displaySearchHistory);
