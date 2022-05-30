@@ -12,45 +12,61 @@ const renderCities = () => {
   // add an event listener on div containing all cities
 };
 
-const renderCurrentWeather = (currentWeatherData) => {
-  // render the current weather data and append to section
-};
-
-const renderForecastWeather = (forecastWeatherData) => {
-  // render the forecast weather data and append each card to section
-};
-
-const renderWeatherData = (cityName) => {
-  // use API to fetch current weather data
-  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
-
-  // from the response cherry pick all the data you want to see in the current weather card
-
-  // get the lat and lon from current weather data API response
+const getWeather = () => {
   const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly&units=metric&appid=${API_KEY}`;
-
-  // render current weather data
-
-  // render forecast weather data
 };
 
-  // get the city name from cityInput and pass it to renderWeatherData
-  // if city name is empty handle that
-  // else add city name to search history
+// use API to fetch longitude and latitude and send response to getWeather
+// store cityName, long, lat in local storage
+const getCoords = (cityName) => {
+  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
+  const storedCities = JSON.parse(localStorage.getItem("cities")) || [];
+
+  fetch(currentWeatherUrl)
+    .then((response) => {
+      return response.json();
+    })
+
+    .then((data) => {
+      const cityInfo = {
+        city: cityName,
+        lon: data.coord.lon,
+        lat: data.coord.lat,
+      };
+
+      storedCities.push(cityInfo);
+      localStorage.setItem("cities", JSON.stringify(storedCities));
+
+      return cityInfo;
+    })
+
+    .then(function (data) {
+      getWeather(data);
+    });
+    
+  return;
+};
+
+// get the city name from cityInput and pass it to renderWeatherData
+// if city name is empty handle that
+// else add city name to search history
 const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const cityName = cityInput.val().trim();
-    if (cityName) {
-        renderWeatherData(cityName);
-        cityInput.val("");
-        } else {
-        alert("Please enter a city name");
-    }
-    console.log(cityName);
+  event.preventDefault();
+  const cityName = cityInput.val().trim();
+
+  if (cityName) {
+    getCoords(cityName);
+    cityInput.val("");
+  } else {
+    alert("Please enter a city name");
+  }
 };
 
 const onReady = () => {
   // render recent cities
 };
+
+//event listeners
+searchBtn.on("click", handleFormSubmit);
 
 $(document).ready(onReady);
