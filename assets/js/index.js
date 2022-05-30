@@ -3,7 +3,7 @@ const API_KEY = "fb0d69912058c05c41b41d1bf7bd6b31";
 const cityInput = $("#city-input");
 const searchBtn = $("#search-btn");
 const clearBtn = $("#clear-btn");
-const searchHistory = $("#past-searches");
+const searchHistory = $("#search-history");
 
 const renderCities = () => {
   // get recent cities from LS []
@@ -17,7 +17,7 @@ const getWeather = () => {
 };
 
 // use API to fetch longitude and latitude and send response to getWeather
-// store cityName, long, lat in local storage
+// store cityName, long and lat in local storage
 const getCoords = (cityName) => {
   const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
   const storedCities = JSON.parse(localStorage.getItem("cities")) || [];
@@ -37,13 +37,15 @@ const getCoords = (cityName) => {
       storedCities.push(cityInfo);
       localStorage.setItem("cities", JSON.stringify(storedCities));
 
+      displaySearchHistory();
+      
       return cityInfo;
     })
 
     .then(function (data) {
       getWeather(data);
     });
-    
+
   return;
 };
 
@@ -57,16 +59,39 @@ const handleFormSubmit = (event) => {
   if (cityName) {
     getCoords(cityName);
     cityInput.val("");
+
   } else {
     alert("Please enter a city name");
   }
 };
 
-const onReady = () => {
-  // render recent cities
+ 
+// get search history from local storage
+// display search history on page as buttons
+// when button is clicked get the city name attached to the button and pass it to getCoords
+const displaySearchHistory = () => {
+  const storedCities = JSON.parse(localStorage.getItem("cities"));
+  
+  if (storedCities.length === 0) {
+    searchHistory.text("No search history");
+    
+  } else {
+
+    for (let i = 0; i < storedCities.length; i++) {
+      const cityBtn = $("<button>");
+      cityBtn.addClass("btn-outline-primary", "city-btn");
+      cityBtn.attr("style", "width: 100%", "data-name", storedCities[i].city);
+      cityBtn.text(storedCities[i].city);
+      searchHistory.append(cityBtn);
+    }
+  
+
+  }
+
 };
 
 //event listeners
 searchBtn.on("click", handleFormSubmit);
+searchHistory.on("click", ".city-btn", getCoords);
 
-$(document).ready(onReady);
+$(document).ready(displaySearchHistory);
