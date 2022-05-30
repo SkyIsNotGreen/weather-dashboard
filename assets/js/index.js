@@ -1,9 +1,9 @@
 // global vars
 const API_KEY = "fb0d69912058c05c41b41d1bf7bd6b31";
-const cityInput = $('#city-input');
-const searchBtn = $('#search-button');
-const clearBtn = $('#clear-button');
-const pastSearchedCitiesEl = $('#past-searches');
+const cityInput = $("#city-input");
+const searchBtn = $("#search-btn");
+const clearBtn = $("#clear-btn");
+const searchHistory = $("#past-searches");
 
 const renderCities = () => {
   // get recent cities from LS []
@@ -34,10 +34,19 @@ const renderWeatherData = (cityName) => {
   // render forecast weather data
 };
 
-const handleFormSubmit = () => {
-  // get the city name from input
+  // get the city name from cityInput and pass it to renderWeatherData
   // if city name is empty handle that
-  // else render weather data
+  // else add city name to search history
+const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const cityName = cityInput.val().trim();
+    if (cityName) {
+        renderWeatherData(cityName);
+        cityInput.val("");
+        } else {
+        alert("Please enter a city name");
+    }
+    console.log(cityName);
 };
 
 const onReady = () => {
