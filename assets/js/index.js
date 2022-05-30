@@ -88,7 +88,47 @@ const getWeather = (data) => {
       }
 
       // ---FIVE DAY FORECAST---
-      
+
+      //create header for five day forecast
+      const fiveDayForecastEl = $("<h2>");
+      fiveDayForecastEl.text("5-Day Forecast:");
+      $("#fiveDayForecast").append(fiveDayForecastEl);
+
+      // get key weather data for each day of the week
+      for (let i = 1; i < 6; i++) {
+
+        // create div for each day of the week
+        const dayOfWeek = $("<div>");
+        dayOfWeek.addClass("card bg-light mb-3");
+        $("#fiveDayForecast").append(dayOfWeek);
+
+        // create date for each day of the week
+        const dayOfWeekDate = $("<p>");
+        dayOfWeekDate.text(moment().add(i, 'days').format('dddd'));
+        dayOfWeek.append(dayOfWeekDate);
+
+        // create icon for each day of the week
+        const dayOfWeekIcon = $("<img>");
+        dayOfWeekIcon.attr("src", `https://openweathermap.org/img/w/${data.daily[i].weather[0].icon}.png`);
+        dayOfWeekIcon.attr("alt", "weather icon");
+        dayOfWeekIcon.attr("style", "width: 100px");
+        dayOfWeek.append(dayOfWeekIcon);
+
+        // create temp for each day of the week
+        const dayOfWeekTemp = $("<p>");
+        dayOfWeekTemp.text(`Temp: ${data.daily[i].temp.day}°C`);
+        dayOfWeek.append(dayOfWeekTemp);
+
+        // create wind speed for each day of the week
+        const dayOfWeekWindSpeed = $("<p>");
+        dayOfWeekWindSpeed.text(`Wind Speed: ${data.daily[i].wind_speed} KPH`);
+        dayOfWeek.append(dayOfWeekWindSpeed);
+
+        // create humidity for each day of the week
+        const dayOfWeekHumidity = $("<p>");
+        dayOfWeekHumidity.text(`Humidity: ${data.daily[i].humidity}%`);
+        dayOfWeek.append(dayOfWeekHumidity);
+      }
 
     });
 };
