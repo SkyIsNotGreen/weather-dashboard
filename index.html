@@ -5,25 +5,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Dashboard</title>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+
+    <!--font awesome-->
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" 
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" 
+    />
+    
     <link rel="stylesheet" href="./assets/css/styles.css" />
   </head>
+
   <body>
     <!-- header -->
     <header>TITLE</header>
     <main class="row border">
+
       <!-- Form and recent history section -->
       <section class="col-sm-12 col-md-3 border">
+
         <!-- search form -->
-        <div>Search Form</div>
+        <form>
+            <label class="text-primary">Search for a City:</label>
+            <input class="form-control my-2 text-primary" type="search" placeholder="Enter city" id="city-input">
+            <button class="btn btn-outline-primary my-2" type="submit" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
+        <button class="btn btn-outline-primary my-2" style="width: 100%" type="submit" id="clear-btn">Clear History</button>
+
 
         <!-- recent cities -->
-        <div>Recent Cities</div>
+        <div class="border-top border-primary" id="search-history">
+           <label class="text-primary">Recent Cities:</label> 
+        </div>
+
       </section>
 
       <!-- current and future data section -->
@@ -32,78 +55,18 @@
         <div>Current Weather Data</div>
 
         <!-- forecast weather data -->
-        <div>
-          <!-- title -->
-          <h2>Title</h2>
-          <div class="d-flex justify-content-between flex-wrap">
-            <!-- forecast weather card 1 -->
-            <div class="card" style="width: 12rem">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <!-- forecast weather card 2 -->
-            <div class="card" style="width: 12rem">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <!-- forecast weather card 3 -->
-            <div class="card" style="width: 12rem">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <!-- forecast weather card 4 -->
-            <div class="card" style="width: 12rem">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <!-- forecast weather card 5 -->
-            <div class="card" style="width: 12rem">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
+        <div class="column col-9">
+            <div class="row" id="currentConditions"></div>
+            <!-- Current city current weather conditions will go here  -->
+            
+            <div class="row" id="fiveDayForecastHeader"></div>
+            <div class="d-flex flex-row flex-wrap justify-content-between" id="fiveDayForecast"></div>
+            <!-- Current city 5 day forecast will go here  -->
           </div>
-        </div>
+          
       </section>
     </main>
+    
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

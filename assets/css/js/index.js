@@ -1,4 +1,9 @@
-const API_KEY = "YOUR_API_KEY";
+// global vars
+const API_KEY = "fb0d69912058c05c41b41d1bf7bd6b31";
+const cityInput = $('#city-input');
+const searchBtn = $('#search-button');
+const clearBtn = $('#clear-button');
+const pastSearchedCitiesEl = $('#past-searches');
 
 const renderCities = () => {
   // get recent cities from LS []
