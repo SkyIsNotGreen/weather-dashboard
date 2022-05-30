@@ -12,8 +12,50 @@ const renderCities = () => {
   // add an event listener on div containing all cities
 };
 
-const getWeather = () => {
-  const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly&units=metric&appid=${API_KEY}`;
+// use API to fetch weather data via lat-long and render selected data on the page
+const getWeather = (data) => {
+
+  const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${data.lat}&lon=${data.lon}&exclude=current,minutely,hourly&units=metric&appid=${API_KEY}`;
+
+  fetch(forecastWeatherUrl)
+    .then((response) => {
+      return response.json();
+    })
+
+    .then((data) => {
+      console.log(data);
+      // current weather
+      const currentConditionsEl = $('#currentConditions');
+      currentConditionsEl.addClass('border border-primary');
+      
+      // create city name h2 and append to currentConditionsEl
+      const cityName = data.timezone.split("/")[1];
+      const cityNameEl = $("<h2>");
+      cityNameEl.text(cityName);
+      currentConditionsEl.append(cityNameEl);
+     
+      // get date from response and append to cityNameEl
+      const date = (data.dt);
+      const dateEl = $("<h4>");
+      dateEl.text(moment(date).format("MMMM Do YYYY"));
+      currentConditionsEl.append(dateEl);
+
+      // get weather icon and display by appending to cityNameEl            
+      const icon = (data.daily[0].weather[0].icon);
+      const iconUrl = `https://openweathermap.org/img/w/${icon}.png`;
+      const iconEl = $("<img>");
+      iconEl.attr("src", iconUrl);
+      iconEl.attr("alt", "weather icon");
+      iconEl.attr("style", "width: 100px");
+      currentConditionsEl.append(iconEl);
+
+      // get current temp and append to iconEl
+      const temp = (data.daily[0].temp.day);
+      const tempEl = $("<h4>");
+      tempEl.text(`${temp}°C`);
+      currentConditionsEl.append(tempEl);
+
+    });
 };
 
 // use API to fetch longitude and latitude and send response to getWeather
@@ -38,11 +80,11 @@ const getCoords = (cityName) => {
       localStorage.setItem("cities", JSON.stringify(storedCities));
 
       displaySearchHistory();
-      
+
       return cityInfo;
     })
 
-    .then(function (data) {
+    .then((data) => {
       getWeather(data);
     });
 
@@ -65,6 +107,11 @@ const handleFormSubmit = (event) => {
   }
 };
 
+
+const handleClearHistory = () => {
+  localStorage.clear();
+  displaySearchHistory();
+};
  
 // get search history from local storage
 // display search history on page as buttons
@@ -72,8 +119,8 @@ const handleFormSubmit = (event) => {
 const displaySearchHistory = () => {
   const storedCities = JSON.parse(localStorage.getItem("cities"));
   
-  if (storedCities.length === 0) {
-    searchHistory.text("No search history");
+  if (storedCities === null) {
+    searchHistory.text("No search history found");
     
   } else {
 
@@ -93,5 +140,6 @@ const displaySearchHistory = () => {
 //event listeners
 searchBtn.on("click", handleFormSubmit);
 searchHistory.on("click", ".city-btn", getCoords);
+clearBtn.on("click", handleClearHistory);
 
 $(document).ready(displaySearchHistory);
